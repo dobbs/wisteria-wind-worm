@@ -1,0 +1,27 @@
+<!doctype html>
+<button>can haz cookies?</button>
+<pre data-id="log">
+</pre>
+<script type="module">
+  let record = {}
+  let log = document.querySelector('[data-id=log]')
+  function load() {
+    record.version = localStorage.getItem("wisteria.version")
+    record.last = localStorage.getItem("wisteria.last")
+  }
+  function save() {
+    localStorage.setItem("wisteria.last", record.last)
+  }
+  function show() {
+    log.innerText = `
+version: ${record.version}
+last: ${record.last}`
+  }
+  document.querySelector('button').onclick = event => {
+    record.last = new Date()
+    save()
+    show()
+  }
+  load()
+  show()
+</script>

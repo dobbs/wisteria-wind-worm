@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <title>selfAddressed framed page</title>
+</head>
+<body>
+  <h2>this page is iframed</h2>
+
+  <script src="https://unpkg.com/self-addressed@0.3.0/dist/self-addressed.js"></script>
+  <script>
+    console.log('Wisteria is loading self-addressed-child.html');
+    
+    function mailman(address, msg) {
+      address.postMessage(msg, '*');
+    }
+
+    window.onmessage = function (event) {
+      console.log('Wisteria has received event', JSON.stringify(event.data));
+      selfAddressed(event.data);
+    };
+
+    selfAddressed(mailman, parent, 'foo')
+      .then(function (response) {
+        console.log('Wisteria got response from Lilac:', response);
+        if (response !== 'bar') {
+          console.log('throwing error');
+          throw new Error('Wisteria has received wrong response ' + response);
+        }
+      });
+  </script>
+</body>
+</html>
